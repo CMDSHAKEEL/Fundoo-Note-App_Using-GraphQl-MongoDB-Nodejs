@@ -1,7 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const PORT =8000;
+const PORT =3000;
 const  { graphqlHTTP } = require('express-graphql');
+const { buildSchema } = require('graphql')
+const Events = require('./models/model')
+ 
  
 const app = express();
 app.use(bodyParser.json());
@@ -24,11 +27,14 @@ mongoose.connect(dbConfig.url, {
 
 //working of graphql
 
-app.use('/graphql', graphqlHTTP ({
-    schema : buildSchema,
-    rootValue: appReslover ,
-    graphiql :true
-})
+app.use('/graphql', graphqlHTTP({
+    schema: buildSchema,
+    rootValue: null,
+     graphiql:true
+})  
+
+     
+
 );
 
 app.listen(PORT ,()=>{
