@@ -1,7 +1,7 @@
 
-const buildSchema = require('graphql')
+const {buildSchema} = require('graphql')
 
-module.exports= buildSchema(`  
+module.exports = buildSchema(` 
        type Event {
            _id:ID!
            firstName:String!
@@ -22,11 +22,11 @@ module.exports= buildSchema(`
        events : [Event!]!
     }
     type RootMutation {
-       createEvent(eventInput: EventInput): Event
+       createUser(eventInput: EventInput): Event
   
     }
        schema{
            query: RootQuery
            mutation: RootMutation
        }
-   `)
+   `);
