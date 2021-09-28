@@ -2,8 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const PORT =3000;
 const  { graphqlHTTP } = require('express-graphql');
-const { buildSchema } = require('graphql')
-const Events = require('./models/model')
+const  buildSchema = require('./app/WorkingofGraphql/Schema/index')
+const userResolvers = require('./app/WorkingofGraphql/resolver/index')
  
  
 const app = express();
@@ -11,6 +11,7 @@ app.use(bodyParser.json());
 
 // Configuring the database
 const dbConfig = require('./config/database.config');
+
 const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
@@ -29,7 +30,7 @@ mongoose.connect(dbConfig.url, {
 
 app.use('/graphql', graphqlHTTP({
     schema: buildSchema,
-    rootValue: null,
+    rootValue: userResolvers,
      graphiql:true
 })  
 
