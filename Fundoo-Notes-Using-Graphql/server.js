@@ -33,9 +33,6 @@ app.use('/graphql', graphqlHTTP({
     rootValue: userResolvers,
      graphiql:true
 })  
-
-     
-
 );
 
 app.listen(PORT ,()=>{
