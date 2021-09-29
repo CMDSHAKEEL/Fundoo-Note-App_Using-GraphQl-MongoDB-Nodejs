@@ -41,8 +41,14 @@ const userResolver ={
     // Login 
     
      loginuser:args=>{
-         return  bcrypt
+       return  User.findOne({email:args.userInput.email})
+         .then(user =>{
+             if(user){
+                 throw new Error('User or email id Already Exixt')
+             }
+             return  bcrypt
          .hash(args.userInput.password, 12)
+         })
          .then(hashedPassword =>{
             const user = new User({
                 email:args.userInput.email,

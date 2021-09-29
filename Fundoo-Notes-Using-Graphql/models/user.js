@@ -5,11 +5,14 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
     email:{
         type: String,
-        required: true
+        required: true,
+        unique: true,
     },
     password:{
         type: String,
+        
         required: true
+         
     },
     createdEvents:[
         {
@@ -18,4 +21,4 @@ const userSchema = new Schema({
         }
     ]
 });
-module.exports=mongoose.model('User',userSchema)
+module.exports = mongoose.model('User',userSchema)
