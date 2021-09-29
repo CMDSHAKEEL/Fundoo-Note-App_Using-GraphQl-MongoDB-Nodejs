@@ -1,5 +1,7 @@
- const Event = require('../../../models/model')
-const events  = [];
+ const Event = require('../../../models/model');
+ const User = require('../../../models/user')
+ const bcrypt =require('bcryptjs')
+ 
 
 const userResolver ={
 
@@ -38,24 +40,24 @@ const userResolver ={
     },
     // Login 
     
-    loginUser:  args =>{
-        return bcrypt
-         .hash(args.userInput.password,  12)
-         .then(hashedpassword=>{
-             const user = new User({
-                 email: args.userInput.email,
-                 password: hashedpassword,
-             })
-             return user.save();
+     loginUser:args=>{
+         return  bcrypt
+         .hash(args.userInput.password, 12)
+         .then(hashedPassword =>{
+            const user = new User({
+                email:args.userInput.email,
+                password: hashedPassword 
+            });  
+            return user.save();
          })
-         .then(result =>{
-             return { ...result._doc, _id: result._id}
+         .then(result=>{
+             return {...result._doc,_id:result._id}
          })
-         
-         .catch(err =>{
+         .catch(err=>{
              throw err;
          })
          
+            
      }
 }
 
