@@ -40,7 +40,7 @@ const userResolver ={
     },
     // Login 
     
-     loginUser:args=>{
+     loginuser:args=>{
          return  bcrypt
          .hash(args.userInput.password, 12)
          .then(hashedPassword =>{
