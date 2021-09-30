@@ -47,7 +47,7 @@ const userResolver ={
                  throw new Error('User or email id Already Exixt')
              }
              return  bcrypt
-         .hash(args.userInput.password, 12)
+         .hash(args.userInput.password, 7)
          })
          .then(hashedPassword =>{
             const user = new User({
