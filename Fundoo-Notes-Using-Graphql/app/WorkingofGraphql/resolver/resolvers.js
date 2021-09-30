@@ -1,7 +1,7 @@
  const Event = require('../../../models/model');
  const User = require('../../../models/user')
  const bcrypt =require('bcryptjs')
- 
+ const jwt = require('jsonwebtoken')
 
 const userResolver ={
 
@@ -61,10 +61,22 @@ const userResolver ={
          })
          .catch(err=>{
              throw err;
-         })
-         
-            
-     }
+         })   
+     },
+     login:async({email ,password})=>{
+        const user = await User.findOne({email:email});
+        if(!user){
+            throw new Error('User or email id does not exist')
+        }
+        const isEqual =await bcrypt.compare(password,user.password)
+        if(!isEqual){
+            throw new Error ('password is incorrect or invalid')
+        }
+        const token =jwt.sign({userId:user.id, email:user.email },'supersecretkey',{
+            expiresIn:'1h'
+        })
+     return{ userId: user.id,token:token,tokenExpiration:1 }
+    }
 }
 
 module.exports = userResolver; 
