@@ -1,7 +1,7 @@
- const Event = require('../../../models/model');
- const User = require('../../../models/user')
- const bcrypt =require('bcryptjs')
- const jwt = require('jsonwebtoken')
+ const Event  = require('../../../models/model');
+ const User   = require('../../../models/user')
+ const bcrypt = require('bcryptjs')
+ const jwt    = require('jsonwebtoken')
 
 const userResolver ={
 
@@ -9,7 +9,7 @@ const userResolver ={
     events:()=>{
      return Event.find()
      .then(events=>{
-        return events.map(event=>{
+        return events.map(event=>{ 
             return{ ...event._doc};
         })
          }
@@ -20,7 +20,7 @@ const userResolver ={
       
     },
     // Creating User
-    createUser:  args=>{
+    createUser:   async args=>{
         const event = new Event({
             firstName: args.eventInput.firstName,
             lastName:args.eventInput.lastName,
@@ -41,7 +41,7 @@ const userResolver ={
     // Login 
     
      loginuser:args=>{
-       return  User.findOne({email:args.userInput.email})
+       return  Event.findOne({email:args.userInput.email})
          .then(user =>{
              if(user){
                  throw new Error('User or email id Already Exixt')
@@ -50,11 +50,11 @@ const userResolver ={
          .hash(args.userInput.password, 7)
          })
          .then(hashedPassword =>{
-            const user = new User({
+            const users = new User({
                 email:args.userInput.email,
                 password: hashedPassword 
             });  
-            return user.save();
+            return users.save();
          })
          .then(result=>{
              return {...result._doc,_id:result._id}
@@ -64,7 +64,7 @@ const userResolver ={
          })   
      },
      login:async({email ,password})=>{
-        const user = await User.findOne({email:email});
+        const user = await Event.findOne({email:email});
         if(!user){
             throw new Error('User or email id does not exist')
         }
@@ -76,7 +76,23 @@ const userResolver ={
             expiresIn:'1h'
         })
      return{ userId: user.id,token:token,tokenExpiration:1 }
+    },
+    //forgetpassword
+
+    forgotpassword :async args=>{
+        const user = new User({email :args.forgotInput.email,password :args.forgotInput.password});
+        return user
+         
+        .then(result =>{
+            console.log(result)
+            return{...result._doc}
+        })
+        .catch(err=>{
+            console.log(err)
+            return err;
+        })
     }
+
 }
 
 module.exports = userResolver; 

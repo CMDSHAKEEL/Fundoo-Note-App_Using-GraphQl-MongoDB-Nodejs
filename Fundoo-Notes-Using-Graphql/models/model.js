@@ -19,6 +19,11 @@ const eventSchema = new Schema({
         type: String,
         required: true,
     },
+    password: {
+        type: String,
+        required: true,
+        minlength: 5
+    },
     creator:{
         type:Schema.Types.ObjectId,
         ref: 'User' 
