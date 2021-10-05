@@ -80,17 +80,13 @@ const userResolver ={
     //forgetpassword
 
     forgotpassword :async args=>{
-        const user = new User({email :args.forgotInput.email,password :args.forgotInput.password});
-        return user
-         
-        .then(result =>{
-            console.log(result)
-            return{...result._doc}
-        })
-        .catch(err=>{
-            console.log(err)
-            return err;
-        })
+        const userpass = await Event.findOne({email :args.forgotInput.email});
+        if(!userpass){
+            return({
+                message : 'email not found or invalid email id',
+            })
+        }
+        
     }
 
 }
