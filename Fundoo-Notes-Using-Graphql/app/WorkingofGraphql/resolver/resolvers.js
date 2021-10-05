@@ -2,6 +2,7 @@
  const User   = require('../../../models/user')
  const bcrypt = require('bcryptjs')
  const jwt    = require('jsonwebtoken')
+ const sendinfobymail = require('../../../utilities/nodemailer')
 
 const userResolver ={
 
@@ -80,14 +81,24 @@ const userResolver ={
     //forgetpassword
 
     forgotpassword :async args=>{
-        const userpass = await Event.findOne({email :args.forgotInput.email});
-        if(!userpass){
+        
+        const userpresent = await Event.findOne({email :args.forgotInput.email});
+        if(userpresent){
             return({
-                message : 'email not found or invalid email id',
+                
+                message : ' OTP send to your email id',
             })
         }
-        
-    }
+        sendinfobymail.getMailDetails(userpresent,(error,data)=>{
+            if(!data){
+                return ({
+                    message :'failed to send otp'
+                })
+            }
+        })
+         return ({email :userpresent.email})
+    },
+    
 
 }
 

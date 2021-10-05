@@ -23,6 +23,7 @@ module.exports = buildSchema(`
        type forgetReturn
        {
            email:String
+           message:String
        }
         
        input EventInput {
@@ -37,7 +38,7 @@ module.exports = buildSchema(`
             password:String!
         }
         input ForgotPass{
-            email:String!
+            email:String
         }
       
    type RootQuery{
