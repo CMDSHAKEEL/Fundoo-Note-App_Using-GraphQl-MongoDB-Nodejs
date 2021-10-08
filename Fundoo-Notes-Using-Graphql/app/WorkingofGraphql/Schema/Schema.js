@@ -40,6 +40,11 @@ module.exports = buildSchema(`
         input ForgotPass{
             email:String
         }
+        input ResetPass{
+            email :String
+            mailcode:String
+            newpassword:String
+        }
       
    type RootQuery{
        events : [Event!]!
@@ -49,7 +54,7 @@ module.exports = buildSchema(`
        createUser(eventInput: EventInput): Event
        loginuser(userInput :UserInput): User
        forgotpassword(forgotInput :ForgotPass): forgetReturn
-  
+       resetpassword(resetInput :ResetPass): forgetReturn
     }
        schema{
            query: RootQuery

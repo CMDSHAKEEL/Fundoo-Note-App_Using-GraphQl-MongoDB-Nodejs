@@ -1,8 +1,9 @@
  const Event  = require('../../../models/model');
  const User   = require('../../../models/user')
  const bcrypt = require('bcryptjs')
+ const bcryptpassword = require('../../../utilities/bcryptpass')
  const jwt    = require('jsonwebtoken')
- const sendinfobymail = require('../../../utilities/nodemailer')
+ const sendinfobymail = require('../../../utilities/nodemailers')
 
 const userResolver ={
 
@@ -81,23 +82,36 @@ const userResolver ={
     //forgetpassword
 
     forgotpassword :async args=>{
-        
-        const userpresent = await Event.findOne({email :args.forgotInput.email});
-        if(userpresent){
+        try{
+        const userpresent = await Event.findOne({ email:args.forgotInput.email});
+        if(!userpresent){
             return({
                 
                 message : ' OTP send to your email id',
             })
         }
-        sendinfobymail.getMailDetails(userpresent,(error,data)=>{
+        sendinfobymail.getMailDetails(userpresent.email,(error,data)=>{
             if(!data){
                 return ({
                     message :'failed to send otp'
                 })
             }
         })
-         return ({email :userpresent.email})
+         return ( {
+            success: true,
+            message: 'Email Sent',
+         })
+        }
+        catch (error) {
+            console.log(error)
+            return ({
+                success: false,
+                message: 'Internal Error Occured',
+            });
+        }
     },
+
+    //reset password
     
 
 }
